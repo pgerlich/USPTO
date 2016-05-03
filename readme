@@ -1,0 +1,49 @@
+NOTE: All data stored in database 0.
+To access, use the following commands:
+>redis-cli
+>keys *
+
+Will print all the keys in our database
+
+
+Parsing USPTO data:
+
+use parse.py for parsing XML/text documents
+
+syntax: python parse.py inputFileOrDirectory
+
+Parses and stores the given file or directory
+
+working example: python parse.py sample_data/small_sample.xml
+
+
+Querying USPTO data:
+
+use query.py for querying the redis USPTO database.
+
+syntax: python query.py --Title="query values" --Description="query values" --IssueDate="yyyymmdd-yyyymmdd" --ApprovalDate="yyyymmdd-yyyymmdd"
+
+Title: space seperated strings. Using AND symantex - in such that each value must be in the title.
+Description: same as above
+IssueDate: year range for the issue date min-max
+ApprovalDate: same as above
+
+all parameters are optional
+
+working example: python query.py --Title="vehicle said" --ApprovalDate=19800101-19900101
+*Note: The example only works if you've loaded data from the given date range.*
+
+
+Bulk downloading USPTO data:
+for downloading data in bulk from the google USPTO sources
+
+syntax: python bulk_download.py yyyymmdd-yyyymmdd
+
+Where the date range is from min-max. 
+*Note: Google has protection from bulk downloads. I've heard that they will actively ban IP addresses that hit their servers too hard.*
+
+To then load this into redis, use parse.py with the directory 'data'
+
+To wipe the database, just use query.py
+Syntax: python query.py --WipeMe="true"
+
